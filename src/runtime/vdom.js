@@ -49,6 +49,25 @@ class HandleHook {
   }
 }
 
+class HTMLWidget {
+  constructor(value) {
+    this.value = value
+  }
+  update(prev, node) {
+    if(prev.value !== this.value) {
+      return this.init()
+    }
+  }
+  init() {
+    var el = document.createElement('template')
+    el.innerHTML = this.value
+    return el.content
+  }
+  get type() {
+    return 'Widget'
+  }
+}
+
 class VDomRuntime extends PugRuntime {
   constructor(h) {
     super()
@@ -67,7 +86,10 @@ class VDomRuntime extends PugRuntime {
   handles(value, context, name) {
     value.handle  = new HandleHook(context, name)
   }
-  text(text) {
+  text(text, unescape) {
+    if(text && unescape) {
+      return new HTMLWidget(text)
+    }
     if(text && text.type === 'VirtualNode') {
       return text
     }

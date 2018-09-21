@@ -151,10 +151,15 @@ export class Compiler {
   }
   visitCode(code, context) {
     if(code.buffer) {
-      this.buffer(`$$.child(${context}, $$.text(${code.val}))`)
+      if(code.mustEscape === false) {
+        this.buffer(`$$.child(${context}, $$.text(${code.val}, true))`)
+      } else {
+        this.buffer(`$$.child(${context}, $$.text(${code.val}))`)
+      }
     } else {
       this.buffer(code.val)
     }
+
   }
   visitConditional(code, context) {
     this.buffer(`if(${code.test}) {`).indent()
