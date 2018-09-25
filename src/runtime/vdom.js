@@ -26,7 +26,7 @@ class PropertyHook {
   }
   hook(node, property, self) {
     var previous = self && self.value
-    if(!previous && this.value !== undefined || this.value !== previous) {
+    if(!previous && this.value !== undefined || node[property] !== this.value) {
       node[property] = this.value
     }
   }
