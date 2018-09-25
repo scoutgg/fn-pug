@@ -1,9 +1,30 @@
 {
   "presets": [
-    ["es2015", {
-      "loose": true
-    }],
-    "stage-0"
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [
+            "> 5%"
+          ]
+        }
+      }
+    ]
   ],
-  "plugins": ["transform-decorators-legacy"]
+  "plugins": [
+    [
+      "@babel/plugin-proposal-decorators", {
+        "legacy": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ],
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-proposal-function-bind",
+    "@babel/plugin-transform-async-to-generator"
+  ]
 }

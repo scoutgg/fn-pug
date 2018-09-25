@@ -1,6 +1,6 @@
-import {transform} from 'babel-core'
-import {memberExpression, variableDeclarator, identifier} from 'babel-types'
+import {transform, types} from '@babel/core'
 import {builtin, browser, commonjs} from 'globals'
+const {memberExpression, variableDeclarator, identifier} = types
 
 const GLOBALS = Object.assign(Object.create(null), builtin, browser, commonjs)
 

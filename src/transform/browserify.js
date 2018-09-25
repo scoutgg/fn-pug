@@ -2,7 +2,7 @@ import path from 'path'
 import through from 'through2'
 import fnPug from '..'
 
-const root = 'fn-pug/lib/runtime'
+const root = path.dirname(require.resolve('../runtime'))
 
 const RUNTIMES = {
   'dom': `require('${root}/dom').default(document)`,
