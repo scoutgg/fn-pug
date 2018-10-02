@@ -86,7 +86,7 @@ export class Compiler {
 
     this.buffer(`var ${node} = $$.create(${name})`)
 
-    this.visitAttributes(tag.attrs, node)
+    this.visitAttributes(tag, node)
 
     if(tag.block) this.visit(tag.block, node)
 
@@ -94,7 +94,8 @@ export class Compiler {
 
     return this.buffer(`$$.child(${context}, ${element})`)
   }
-  visitAttributes(attrs, context) {
+  visitAttributes(tag, context) {
+    const { attrs, attributeBlocks } = tag
     const EVENTS = []
     const HANDLES = []
     const ATTRIBUTES = {}
@@ -127,7 +128,13 @@ export class Compiler {
     }
     if(Object.keys(ATTRIBUTES).length) {
       var attributes = objectString(ATTRIBUTES)
-      this.buffer(`$$.attrs(${context}, ${attributes})`)
+      if(attributeBlocks.length) {
+        this.buffer(`$$.attrs(${context}, Object.assign(${attributes}, ${attributeBlocks}))`)
+      } else {
+        this.buffer(`$$.attrs(${context}, ${attributes})`)
+      }
+    } else if(attributeBlocks.length) {
+      this.buffer(`$$.attrs(${context}, Object.assign({}, ${attributeBlocks}))`)
     }
     if(Object.keys(PROPERTIES).length) {
       var properties = objectString(unflatten(PROPERTIES))
