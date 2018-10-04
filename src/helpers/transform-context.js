@@ -16,8 +16,6 @@ delete GLOBALS.parent
 delete GLOBALS.print
 delete GLOBALS.screen
 
-console.log(GLOBALS)
-
 export default function transformContext(code, map) {
   map = JSON.parse(map.toString())
   return transform(code, {
