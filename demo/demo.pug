@@ -12,7 +12,7 @@ each post, index in posts
     section(class=post.type, [innerHTML]=post.content)
     footer
       if post.user
-        i= post.user.name
+        i= post?.user?.name
       else if post.stuff
         i stuff
       else
@@ -20,4 +20,20 @@ each post, index in posts
 
     if item.posts
       +template(item)
-h1(something='blue')&attributes({color: 'red'}) Red header
+h1(something='blue')&attributes({color: 'red'}) attr header
+
+
+// Control flow
+
+- let i = 10
+
+ul
+  while i--
+    li= i
+
+
+case i
+  when 0
+    p hello
+  default
+    p world

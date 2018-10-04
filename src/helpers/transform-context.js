@@ -1,18 +1,28 @@
-import {transform} from 'babel-core'
-import {memberExpression, variableDeclarator, identifier} from 'babel-types'
+import {transform} from '@babel/core/lib/transform'
+import {memberExpression, variableDeclarator, identifier} from '@babel/types'
 import {builtin, browser, commonjs} from 'globals'
+
+import optionalChaining from '@babel/plugin-proposal-optional-chaining'
 
 const GLOBALS = Object.assign(Object.create(null), builtin, browser, commonjs)
 
 delete GLOBALS.name
 delete GLOBALS.constructor
 delete GLOBALS.open
+delete GLOBALS.event
+delete GLOBALS.close
+delete GLOBALS.closed
+delete GLOBALS.parent
+delete GLOBALS.print
+delete GLOBALS.screen
+
+console.log(GLOBALS)
 
 export default function transformContext(code, map) {
   map = JSON.parse(map.toString())
   return transform(code, {
     inputSourceMap: map,
-    plugins: [function transform() {
+    plugins: [optionalChaining, function transform() {
       return {
          visitor: {
            AssignmentExpression(path) {

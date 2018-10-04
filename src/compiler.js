@@ -19,7 +19,7 @@ export class Compiler {
     return this.
       buffer('function template(__INIT__) {').
         indent().
-          buffer('var __RESULT__ = $$.init(this, __INIT__)').
+          buffer('let __RESULT__ = $$.init(this, __INIT__)').
           visit(ast, '__RESULT__').
           buffer('return $$.end(__RESULT__)').
         undent().
@@ -80,11 +80,17 @@ export class Compiler {
 
     return this
   }
+  visitWhile(loop, context)  {
+    this.buffer(`while(${loop.test}) {`).indent()
+    this.visit(loop.block, context)
+    this.undent().buffer('}')
+    return this
+  }
   visitTag(tag, context) {
     var node = `e$${this.uid++}`
     var name = JSON.stringify(tag.name)
 
-    this.buffer(`var ${node} = $$.create(${name})`)
+    this.buffer(`let ${node} = $$.create(${name})`)
 
     this.visitAttributes(tag, node)
 
@@ -100,6 +106,7 @@ export class Compiler {
     const HANDLES = []
     const ATTRIBUTES = {}
     const PROPERTIES = {}
+
 
     for(var {name, val} of attrs) {
       switch (name[0]) {
@@ -129,12 +136,15 @@ export class Compiler {
     if(Object.keys(ATTRIBUTES).length) {
       var attributes = objectString(ATTRIBUTES)
       if(attributeBlocks.length) {
-        this.buffer(`$$.attrs(${context}, Object.assign(${attributes}, ${attributeBlocks}))`)
+        const blocks = attributeBlocks.map(block => block.val)
+        this.buffer(`$$.attrs(${context}, Object.assign(${attributes}, ${blocks}))`)
       } else {
         this.buffer(`$$.attrs(${context}, ${attributes})`)
       }
     } else if(attributeBlocks.length) {
-      this.buffer(`$$.attrs(${context}, Object.assign({}, ${attributeBlocks}))`)
+      const blocks = attributeBlocks.map(block => block.val)
+
+      this.buffer(`$$.attrs(${context}, Object.assign({}, ${blocks}))`)
     }
     if(Object.keys(PROPERTIES).length) {
       var properties = objectString(unflatten(PROPERTIES))
@@ -179,6 +189,23 @@ export class Compiler {
         undent().
       buffer('}')
     }
+    return this
+  }
+  visitCase(switcher, context)  {
+    this.buffer(`switch(${switcher.expr}) {`).indent()
+    this.visit(switcher.block, context)
+    this.undent().buffer('}')
+    return this
+  }
+  visitWhen(when, context) {
+    if(when.expr === 'default') {
+      this.buffer(`default:`).indent()
+
+    } else {
+      this.buffer(`case ${when.expr}:`).indent()
+    }
+    this.visit(when.block, context)
+    this.undent().buffer('break')
     return this
   }
   visitMixin(mixin, context) {
