@@ -33,7 +33,11 @@ module.exports = function browserify(file, options={}) {
       const source = Buffer.concat(content).toString()
       const header =`var $$ = ${runtime}`
       const template = fnPug(source, options)
-      const footer = `module.exports = template`
+
+      const footer = options.module 
+        ? 'export default template'
+        : 'module.exports = template'
+    
       const module = [header, template.code, footer].join('\n')
 
       this.push(new Buffer(module))
