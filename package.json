@@ -1,28 +1,16 @@
 {
   "name": "@scoutgg/fn-pug",
   "version": "2.2.0",
-  "description": "",
   "main": "index.js",
   "jsnext:main": "src/index.js",
-  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --out-dir lib",
-    "watch": "npm run build -- --watch"
+    "watch": "npm run build -- --watch",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "Scout Gaming Group <oystein.olsen@scoutgaminggroup.com>",
-  "contributors": [
-    "Øystein Ø. Olsen (https://github.com/FireNeslo)"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/scoutgg/fn-pug.git"
-  },
-  "bugs": {
-    "url": "https://github.com/scoutgg/fn-pug/issues"
-  },
-  "homepage": "https://github.com/scoutgg/fn-pug",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.1.2",
@@ -46,5 +34,17 @@
     "pug-parser": "^5.0.0",
     "source-map": "^0.7.3",
     "through2": "^2.0.3"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scoutgg/fn-pug.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scoutgg/fn-pug/issues"
+  },
+  "homepage": "https://github.com/scoutgg/fn-pug#readme",
+  "description": ""
 }
