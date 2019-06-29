@@ -4,13 +4,25 @@
   "description": "",
   "main": "index.js",
   "jsnext:main": "src/index.js",
+  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --out-dir lib",
     "watch": "npm run build -- --watch"
   },
   "keywords": [],
-  "author": "",
+  "author": "Scout Gaming Group <oystein.olsen@scoutgaminggroup.com>",
+  "contributors": [
+    "Øystein Ø. Olsen (https://github.com/FireNeslo)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scoutgg/fn-pug.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scoutgg/fn-pug/issues"
+  },
+  "homepage": "https://github.com/scoutgg/fn-pug",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.1.2",
