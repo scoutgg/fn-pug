@@ -28,7 +28,7 @@ module.exports = function browserify(file, options={}) {
 
   function transform(done) {
     try {
-      options.file = file
+      options.filename = file
 
       const source = Buffer.concat(content).toString()
       const header =`var $$ = ${runtime}`
