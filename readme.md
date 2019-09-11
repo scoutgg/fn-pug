@@ -71,7 +71,7 @@ form-control(
 
 Allows you to create nice declarative databinding
 
-### Refs
+#### Refs
 ```pug
 video(#video, src="some.video")
 
@@ -79,7 +79,7 @@ button((click)=video.play()) Play
 ```
 Creates reference names for nodes
 
-### Hooks
+#### Hooks
 
 ```pug
 .wrapper(*modify=node => console.log(node))
@@ -105,11 +105,11 @@ function logNode(prefix) {
 .wrapper(*log=logNode('inner'))
 ```
 
-### Mixins
+#### Mixins
 
 This is the intended pattern for partials and minimal components
 
-#### Usage
+##### Usage
 ```pug
 - const partial = require('./partial.pug')
 
@@ -117,7 +117,7 @@ This is the intended pattern for partials and minimal components
   h1 This is important
 ```
 
-#### Definition
+##### Definition
 ```pug
 // partial.pug
 .partial(class=properties.class)
