@@ -12,7 +12,7 @@ $ npm i scoutgg/fn-pug
 ```js
 const fnPug = require('fn-pug')
 
-const template = "h1 hello"
+const template = "h1 hello ${name}"
 
 const { code, map, ast } = fnPug(template)
 
@@ -27,6 +27,26 @@ console.log(code)
       "fn-pug/lib/transform/browserify"
     ]
   }
+}
+```
+
+### Browser
+```js
+const fnPug = require('fn-pug')
+const { h, create } = require('virtual-dom')
+
+const runtime = require('fn-pug/lib/runtime/vdom')
+const vdomRuntime = runtime.default(h)
+
+const template = "h1 hello ${name}"
+
+const greeter = fnPug.compileClient(template, vdomRuntime)
+
+const vNodes = greeter.call({ name: 'FireNeslo' })
+const domNodes = vNodes.map(create)
+
+for(const node of domNodes) {
+  document.body.appendChild(node)
 }
 ```
 
