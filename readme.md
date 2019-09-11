@@ -12,7 +12,7 @@ $ npm i scoutgg/fn-pug
 ```js
 const fnPug = require('fn-pug')
 
-const { code, map, ast } = fnJade(template)
+const { code, map, ast } = fnPug(template)
 
 console.log(code)
 ```
