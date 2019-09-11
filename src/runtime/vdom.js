@@ -20,6 +20,23 @@ class EventHook {
   }
 }
 
+class FunctionHook {
+  constructor(subscribe) {
+    this.subscribe = subscribe
+  }
+  hook(node, propertyName, previousValue) {
+    if(this.subscribe) {
+      this.unsubscribe = this.subscribe(node, propertyName, previousValue)
+    }
+  }
+  unhook() {
+    if(this.unsubscribe) {
+      this.unsubscribe()
+      delete this.unsubscribe
+    }
+  }
+}
+
 class PropertyHook {
   constructor(value) {
     this.value = value
@@ -79,6 +96,15 @@ class VDomRuntime extends PugRuntime {
     delete properties.tagName
     delete properties.children
     return this.h(tagName, properties, children)
+  }
+  hooks(context, value) {
+    for(var [ key, value ] of Object.entries(value)) {
+      if(typeof value === 'function') {
+        context[key] = new FunctionHook(value)
+      } else {
+        context[key] = value
+      }
+    }
   }
   events(value, context, events) {
     return value.events = new EventHook(events, context)

@@ -42,6 +42,9 @@ export class PugRuntime {
   element(properties) {
     return properties
   }
+  hooks(target, source) {
+    return Object.assign(target, source)
+  }
   handles(value, context, name) {
     value.handle = [context, name]
   }
@@ -75,8 +78,14 @@ export class PugRuntime {
     }
     return value + ''
   }
-  mixin(parent, self, mixin, ...args) {
-    this.child(parent, mixin.call(Object.assign(Object.create(self), ...args)))
+  mixin(context, node, ...props) {
+    node.properties = Object.assign({}, node.properties, ...props)
+    
+    const nodes = node.tagName.apply(node)
+
+    for(const child of nodes) {
+      this.child(context, child)
+    }
   }
   each(iterable, callback) {
     if(!iterable) return

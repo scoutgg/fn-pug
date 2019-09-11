@@ -1,5 +1,5 @@
-form((submit)=newRender(e))
-  label
+form((submit)=newRender(e), class=properties?.class)
+  label(*hook=node => console.log({node}))
     | Search input
     input(type="text")
   button((click)=newRender(e))
@@ -19,9 +19,14 @@ each post, index in posts
         b Admin
 
     if item.posts
-      +template(item)
+      +template.hello(posts=posts)
+        h1 hello
+
 h1(something='blue')&attributes({color: 'red'}) attr header
 
+
+each child in children
+  .wrap= child
 
 // Control flow
 

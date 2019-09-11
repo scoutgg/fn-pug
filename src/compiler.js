@@ -106,14 +106,13 @@ export class Compiler {
     const HANDLES = []
     const ATTRIBUTES = {}
     const PROPERTIES = {}
-
+    const HOOKS = {}
 
     for(var {name, val} of attrs) {
       switch (name[0]) {
         case "*":
-          PROPERTIES[name.slice(1)] = val;
+          HOOKS[name.slice(1)] = val;
           break;
-
         case "#":
           HANDLES.push(`${JSON.stringify(name.slice(1))}`)
         break;
@@ -159,6 +158,10 @@ export class Compiler {
     }
     if(EVENTS.length) {
       this.buffer(`$$.events(${context}, this, [${EVENTS}])`)
+    }
+    if(Object.keys(HOOKS).length) {
+      const hooks = objectString(unflatten(HOOKS))
+      this.buffer(`$$.hooks(${context}, ${hooks})`)
     }
   }
   visitComment(comment) {
@@ -213,21 +216,31 @@ export class Compiler {
     return this
   }
   visitMixin(mixin, context) {
+    var node = `e$${this.uid++}`
+
+    this.buffer(`let ${node} = $$.create(${mixin.name})`)
+
     const ATTRIBUTES = {}
+    
     var attributes = ''
+
     if(mixin.attrs.length) {
       for(let {name, val} of mixin.attrs) {
         ATTRIBUTES[name] = val
       }
       attributes = objectString(ATTRIBUTES)
     }
+    
     if(mixin.args) {
       attributes += (attributes ? ',' : '' ) + mixin.args
     }
+
+    if(mixin.block) this.visit(mixin.block, node)
+
     if(attributes) {
-      this.buffer(`$$.mixin(${context}, this, ${mixin.name}, ${attributes})`)
+      return this.buffer(`$$.mixin(${context}, ${node}, ${attributes})`)
     } else {
-      this.buffer(`$$.mixin(${context}, this, ${mixin.name})`)
+      return this.buffer(`$$.mixin(${context}, ${node})`)
     }
   }
 }
