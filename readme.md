@@ -24,7 +24,7 @@ console.log(code)
 {
   "browserify": {
     "transform": [
-      "fn-pug/lib/transform/browserify",
+      "fn-pug/lib/transform/browserify"
     ]
   }
 }
