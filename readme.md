@@ -117,3 +117,70 @@ This is the intended pattern for partials and minimal components
     .wrapped
       = child
 ```
+## API
+
+### fnPug(code, options)
+Compile pug strings
+
+#### Returns
+* ***Result*** *result* compilation result
+* ***[Program](https://babeljs.io/docs/en/next/babel-types.html#program)*** *result.ast* babel ast output
+* ***[SourceMapGenerator](https://www.npmjs.com/package/source-map#sourcemapgenerator)*** *result.map* Sourcemap builder
+* ***string*** *result.code* javascript output
+
+#### Params:
+* ***string*** *code* - The pug to compile
+* ***object*** *options* - Compilation options
+* ***string*** *options.file* - Template filename
+
+```js
+const fnPug = require('fn-pug')
+
+const template = 'h1 hello'
+
+const { code, map, ast } = fnJade(template, {
+  file: 'greeting.pug'
+})
+
+```
+
+### fnPugify(file, options)
+Browserify pug transform
+
+#### Returns
+* ***[Transform](https://www.npmjs.com/package/through2)*** *transform* transform stream
+
+#### Params:
+* ***object*** *options* - Compilation options
+* ***string[]*** *options.extensions* - list of pug template extensions
+* ***string*** *options.runtime* - runtime to embed `["dom", "string", "virtual-dom", "snabbdom", "react", "vue"]`
+
+```js
+const fs = require('fs')
+const browserify = require('browserify') 
+const fnPugify = require('fn-pug/lib/transform/browserify')
+
+// this is what will be passed if you pass no options
+const defaultOptions = {
+  runtime: "virtual-dom",
+  extensions: [".jade", ".pug"],
+}
+
+const bundle = browserify('main.js')
+  .transform(fnPugify, defaultOptions)
+  .bundle()
+  .pipe(fs.createWriteStream('bundle.js'))
+```
+
+```json
+{
+  "browserify": {
+    "transform": [
+      ["fn-pug/lib/transform/browserify", {
+        "runtime": "virtual-dom",
+        "extensions": [".jade", ".pug"]
+      }]
+    ]
+  }
+}
+```
