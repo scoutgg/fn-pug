@@ -1,5 +1,5 @@
 # fn-pug
-Create a vitual dom producing function from pug templates
+Create a virtual dom producing function from pug templates
 
 ## Installation
 ```bash
