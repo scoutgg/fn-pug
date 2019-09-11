@@ -7,17 +7,6 @@ $ npm i scoutgg/fn-pug
 ```
 ## Usage
 
-### Standalone
-
-```js
-const fnPug = require('fn-pug')
-
-const template = "h1 hello ${name}"
-
-const { code, map, ast } = fnPug(template)
-
-console.log(code)
-```
 
 ### Browserify
 ```json
@@ -30,7 +19,19 @@ console.log(code)
 }
 ```
 
-### Browser
+### Standalone (Node)
+
+```js
+const fnPug = require('fn-pug')
+
+const template = "h1 hello ${name}"
+
+const { code, map, ast } = fnPug(template)
+
+console.log(code)
+```
+
+### Standalone (Browser)
 ```js
 const fnPug = require('fn-pug')
 const { h, create } = require('virtual-dom')
