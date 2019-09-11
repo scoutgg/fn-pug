@@ -151,6 +151,7 @@ Browserify pug transform
 * ***[Transform](https://www.npmjs.com/package/through2)*** *transform* transform stream
 
 #### Params:
+* ***string*** *file* - Template filename
 * ***object*** *options* - Compilation options
 * ***string[]*** *options.extensions* - list of pug template extensions
 * ***string*** *options.runtime* - runtime to embed `["dom", "string", "virtual-dom", "snabbdom", "react", "vue"]`
