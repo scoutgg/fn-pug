@@ -41,7 +41,7 @@ There is also some added special syntax
 button((click)=console.log(e))
 ```
 you can add event listeners using `(eventName)`.
-They will work like arrow with the magical variable `e` that represents the event.
+They will work like arrow functions with the magical variable `e` that represents the event.
 
 #### Properties
 ```pug
