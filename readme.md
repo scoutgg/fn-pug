@@ -71,6 +71,14 @@ form-control(
 
 Allows you to create nice declarative databinding
 
+### Refs
+```pug
+video(#video, src="some.video")
+
+button((click)=video.play()) Play
+```
+Creates reference names for nodes
+
 ### Hooks
 
 ```pug
