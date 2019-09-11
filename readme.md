@@ -214,3 +214,64 @@ const bundle = browserify('main.js')
   }
 }
 ```
+
+
+## Runtime
+
+If you want to build or extend the runtime you can build you own.
+
+```js
+import { PugRuntime } from 'fn-pug/lib/runtime'
+
+// all methods have defaults
+
+export class MyRuntime extends PugRuntime {
+  constructor(options) {
+    // set options
+  }
+  create(tagName) {
+    // create reference node
+  }
+  child(parentRef, nodeRef) {
+    // append child node
+  }
+  events(nodeRef, events = [ [ "name", () => callback() ] ]) {
+    // add event listeners
+  }
+  element(nodeRef) {
+    // create element from reference
+  }
+  hooks(nodeRef, hooks = { hookName: hookValue }) {
+    // register hooks
+  }
+  handles(nodeRef, templateContext, handleName) {
+    // register handle for handleName
+  }
+  props(nodeRef, properties) {
+    // set properties for reference 
+  }
+  text(text) {
+    // create text node
+  }
+  attrs(nodeRef, attrs) {
+    // set attributes for reference 
+  }
+  attr(value) {
+    // normalize attribute 
+  }
+  mixin(context, nodeRef, ...props) {
+    // include mixin template
+  }
+  each(iterable, callback) {
+    // iterator implementation
+  }
+  end(result) {
+    // transform return value
+  }
+}
+
+export default function createRuntime(options) {
+  return new MyRuntime(options)
+}
+
+```
