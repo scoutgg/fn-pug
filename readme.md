@@ -12,6 +12,8 @@ $ npm i scoutgg/fn-pug
 ```js
 const fnPug = require('fn-pug')
 
+const template = "h1 hello"
+
 const { code, map, ast } = fnPug(template)
 
 console.log(code)
