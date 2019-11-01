@@ -70,14 +70,42 @@ class HTMLWidget {
   constructor(value) {
     this.value = value
   }
-  update(prev, node) {
+  update(prev) {
     if(prev.value !== this.value) {
-      return this.init()
+      const next = this.init(prev)
+      const unhook =  this.value && this.value.unhook
+
+      if(prev.nodes) {
+        prev.nodes[0].replaceWith(next)
+      }
+      if(prev) for(const node of prev.nodes) {
+        if(unhook) this.value.unhook(node)
+        node.remove()
+      }
+      
+      return next
     }
   }
-  init() {
+  destroy() {
+    const unhook = this.value && this.value.unhook
+
+    for(const node of this.nodes) {
+      if(unhook) this.value.unhook(node)
+      node.remove()
+    } 
+  }
+  init(prev) {
     var el = document.createElement('template')
-    el.innerHTML = this.value
+    el.innerHTML = this.value + ''
+
+    this.nodes = Array.from(el.content.childNodes)
+
+    if(this.value && this.value.hook) {
+      for(const node of this.nodes) {
+        this.value.hook(node, 'innerHTML', prev && prev.value)
+      }
+    }
+
     return el.content
   }
   get type() {
@@ -126,7 +154,18 @@ class VDomRuntime extends PugRuntime {
       context.style = value.style
       delete value.style
     }
-    return super.attrs(context, value)
+    
+    context.attributes || (context.attributes = {})
+    
+    if(value.class) {
+      value.class = this.attr(value.class)
+    }
+    for(var attr in value) {
+      if(value[attr] === false || value[attr] == null) continue
+      if(value[attr].hook) context[attr] = value[attr]
+
+      context.attributes[attr] = value[attr] + ''
+    }
   }
   props(context, value) {
     for(var key of Object.keys(value)) {
