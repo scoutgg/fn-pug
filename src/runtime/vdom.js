@@ -30,7 +30,7 @@ class FunctionHook {
     }
   }
   unhook() {
-    if(this.unsubscribe) {
+    if(typeof this.unsubscribe === 'function') {
       this.unsubscribe()
       delete this.unsubscribe
     }
