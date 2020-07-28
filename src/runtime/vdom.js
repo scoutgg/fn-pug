@@ -70,30 +70,35 @@ class HTMLWidget {
   constructor(value) {
     this.value = value
   }
+  
   update(prev) {
-    if(prev.value !== this.value) {
-      const next = this.init(prev)
-      const unhook =  this.value && this.value.unhook
+    if(!prev || prev.value === this.value) return
+    
+    const next = this.init(prev)
 
-      if(prev.nodes) {
-        prev.nodes[0].replaceWith(next)
-      }
-      if(prev) for(const node of prev.nodes) {
-        if(unhook) this.value.unhook(node)
-        node.remove()
-      }
-      
-      return next
-    }
+    if(!prev.nodes) return next
+
+    prev.nodes[0].replaceWith(next)
+    this.removeNodes(prev.nodes)
+    
+    return next
   }
+
   destroy() {
+    this.removeNodes(this.nodes)
+  }
+
+  removeNodes(nodes) {
+    if(!nodes) return
+    
     const unhook = this.value && this.value.unhook
 
-    for(const node of this.nodes) {
-      if(unhook) this.value.unhook(node)
+    for (const node of nodes) {
+      if (unhook) this.value.unhook(node)
       node.remove()
-    } 
+    }
   }
+  
   init(prev) {
     var el = document.createElement('template')
     el.innerHTML = this.value + ''
