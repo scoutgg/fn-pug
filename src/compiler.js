@@ -211,8 +211,12 @@ export class Compiler {
     } else {
       this.buffer(`case ${when.expr}:`).indent()
     }
-    this.visit(when.block, context)
-    this.undent().buffer('break')
+    if(when.block) {
+      this.visit(when.block, context)
+      this.undent().buffer('break')
+    } else {
+      this.undent()
+    }
     return this
   }
   visitMixin(mixin, context) {
