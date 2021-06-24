@@ -1,5 +1,4 @@
 import {SourceMapGenerator} from 'source-map'
-import transformContext from './helpers/transform-context'
 import objectString from './helpers/object-string'
 import path from 'path'
 
@@ -27,7 +26,7 @@ export class Compiler {
   }
   compile(tree, options) {
     this.compileSource(tree, options)
-    const {code, ast, map} = transformContext(this.code, this.map)
+    const {code, ast, map} = [this.code, null, this.map.toJSON()]
     return Object.assign(this, {code, ast, map})
   }
   buffer(code, newline=true) {
@@ -225,7 +224,7 @@ export class Compiler {
     this.buffer(`let ${node} = $$.create(${mixin.name})`)
 
     const ATTRIBUTES = {}
-    
+
     var attributes = ''
 
     if(mixin.attrs.length) {
@@ -234,7 +233,7 @@ export class Compiler {
       }
       attributes = objectString(ATTRIBUTES)
     }
-    
+
     if(mixin.args) {
       attributes += (attributes ? ',' : '' ) + mixin.args
     }
